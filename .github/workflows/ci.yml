@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install ruff pytest
+
+      - name: Lint with ruff
+        run: ruff check .
+
+      - name: Run tests
+        run: python tests/test_tools.py
+
+      - name: Verify data files
+        run: |
+          python -c "
+          import json, os
+          data_dir = 'data'
+          files = ['crops.json', 'pests.json', 'schemes.json', 'market_prices.json', 'crop_calendar.json']
+          for f in files:
+              path = os.path.join(data_dir, f)
+              assert os.path.exists(path), f'{f} missing'
+              data = json.load(open(path))
+              assert len(data) > 0, f'{f} is empty'
+              print(f'✅ {f}: valid')
+          print('All data files valid!')
+          "
