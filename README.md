@@ -1,5 +1,7 @@
 # 🌾 Krishi Mitra — Multilingual Farmer Advisory Agent
 
+![Screenshot](screenshots/output.png)
+
 An AI-powered farming assistant that answers agricultural queries in **Hindi, Tamil, Telugu, Bengali, Marathi, Punjabi, Gujarati, Kannada, Malayalam, and English**.
 
 Built by [Nawang Dorjay](https://github.com/nawangdorjay) — a developer from Ladakh, for **GSSoC 2026** (Agents for India Track).
